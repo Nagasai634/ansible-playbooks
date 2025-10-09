@@ -1,0 +1,43 @@
+---
+ - hosts: all
+   become: true
+   tasks:
+    - name: webserver installation
+      apt: 
+        name: apache2
+        update_cache: yes
+        state: present
+      when: os_family=ubuntu
+    # - name: copying the localfile
+    #   copy:
+    #     src: index.html
+    #     dest: /var/www/html/index.html
+
+
+
+---
+- name: Install and configure Apache web server
+  hosts: all
+  become: true
+  tasks:
+    - name: Update apt package cache and install Apache
+      apt:
+        name: apache2
+        update_cache: yes
+        state: present
+      notify:
+        - enable apache
+        - start apache
+
+
+
+---
+- name: installing ip-utilis
+  hosts: all
+  become: true
+  tasks:
+     - name: ping
+       apt:
+        name: ping
+
+

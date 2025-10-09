@@ -1,0 +1,111 @@
+---
+#installing apache2 in ubuntu and httpd in centos and creating a file and directory
+- name: playbook based on when and file
+  hosts: all
+  become: true
+  tasks:
+    - name: creating a directory
+      file:
+        path: /root/sai
+        state: directory 
+    - name: creating a file
+      file:
+        path: /root/sai/file.txt
+        state: touch 
+    - name: installing apache2 if it is Debian
+      apt:
+        name: apache2
+        state: present
+      when: ansible_os_family == "Debian"
+    - name: starting the service
+      service:
+       name: apache2
+       enabled: yes
+       state: started
+      when: ansible_os_family == "Debian"
+    - name: installing httpd if it is centos
+      yum:
+        name: httpd
+        state: present
+      when: ansible_os_family == "Redhat"
+    - name: starting the service
+      service:
+       name: httpd
+       enabled: yes
+       state: started
+      when: ansible_os_family == "Redhat"
+#TEMPLATE and #VARS
+#command is ansible-playbook -i inv play.yaml --e or --extra-vars
+---
+- name: using template for first time
+  hosts: all
+  become: true
+  vars:
+   coursename: devops
+   batchnumber: 10
+  tasks:
+   - name: installing the apache2 in ubuntu 
+     apt:
+      name: apache2
+      update_cache: yes
+      state: present
+   - name: starting the service
+     service:
+       name: apache2
+       enabled: yes
+       state: started
+   - name: copy the index.html to remote
+     template: 
+      src: index.html
+      dest: /var/www/html/index.html
+
+
+
+#TEMPLATE AND VARS_FILES
+---    
+- name: using template for first time
+  hosts: all
+  become: true
+  vars_files:
+   - dev_vars.yaml
+  tasks:
+   - name: installing the apache2 in ubuntu 
+     apt:
+      name: apache2
+      update_cache: yes
+      state: present
+   - name: starting the service
+     service:
+       name: apache2
+       enabled: yes
+       state: started
+   - name: copy the index.html to remote
+     template: 
+      src: index.html
+      dest: /var/www/html/index.html
+
+
+
+#TEMPLATE AND RUN TIME ENV VARS_FILES
+#command is ansible-playbook -i inv play.yaml -e env=filename
+---    
+- name: using template for first time
+  hosts: all
+  become: true
+  vars_files:
+   - "{{env}}_vars.yaml"
+  tasks:
+   - name: installing the apache2 in ubuntu 
+     apt:
+      name: apache2
+      update_cache: yes
+      state: present
+   - name: starting the service
+     service:
+       name: apache2
+       enabled: yes
+       state: started
+   - name: copy the index.html to remote
+     template: 
+      src: index.html
+      dest: /var/www/html/index.html
