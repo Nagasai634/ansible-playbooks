@@ -139,7 +139,7 @@
       dest: /var/www/html/index.html
 
 
-#installing Multiple packages at once
+#installing Multiple packages at once in ubuntu
 ---
 - name: installing multiple packages at once
   hosts: all
@@ -153,7 +153,7 @@
         - tree
         - unzip
 
-
+#OR
 ---
 - name: installing multiple packages at once
   hosts: all
@@ -168,3 +168,25 @@
         - apache2 
         - tree
         - unzip
+
+
+#installing Multiple packages at once in centos
+---
+- name: installing multiple packages at once
+  hosts: all
+  become: true
+  tasks: 
+    - name: installing multiple packages at once
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - git
+        - httpd 
+        - tree
+        - unzip
+    - name:
+      service:
+        name: httpd
+        state: started
+        enabled: yes
