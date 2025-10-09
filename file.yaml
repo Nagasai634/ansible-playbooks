@@ -137,3 +137,34 @@
      template: 
       src: index.html
       dest: /var/www/html/index.html
+
+
+#installing Multiple packages at once
+---
+- name: installing multiple packages at once
+  hosts: all
+  become: true
+  tasks: 
+    - name: installing multiple packages at once
+      apt: name="{{item}}" state = present
+      with_items:
+        - git
+        - apache2 
+        - tree
+        - unzip
+
+
+---
+- name: installing multiple packages at once
+  hosts: all
+  become: true
+  tasks: 
+    - name: installing multiple packages at once
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - git
+        - apache2 
+        - tree
+        - unzip
