@@ -109,3 +109,31 @@
      template: 
       src: index.html
       dest: /var/www/html/index.html
+
+
+
+#TEMPLATE AND RUN TIME ENV VARS_FILES
+#command is ansible-playbook -i inv play.yaml -e env=filename
+---    
+- name: using template for first time
+  hosts: all
+  become: true
+  vars:
+   - env: dev
+  vars_files:
+   - "{{env}}_vars.yaml"
+  tasks:
+   - name: installing the apache2 in ubuntu 
+     apt:
+      name: apache2
+      update_cache: yes
+      state: present
+   - name: starting the service
+     service:
+       name: apache2
+       enabled: yes
+       state: started
+   - name: copy the index.html to remote
+     template: 
+      src: index.html
+      dest: /var/www/html/index.html
