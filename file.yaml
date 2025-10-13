@@ -201,5 +201,5 @@
   tasks: 
     - name: installing multiple packages at once
       yum:
-        name: ["git","tree","unzip"]
+        name: ["git","tree","unzip","java-17-openjdk-devel"]
         state: present
