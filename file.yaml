@@ -193,7 +193,7 @@
 
 
 
-#UNinstalling Multiple packages at once in centos
+#installing Multiple packages at once in centos
 ---
 - name: installing multiple packages at once
   hosts: all
@@ -202,4 +202,4 @@
     - name: installing multiple packages at once
       yum:
         name: ["git","tree","unzip"]
-        state: absent
+        state: present
