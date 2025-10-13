@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  python-app:
+    image: vardhan99
+    build: /root/docker/python-app/
+    ports:
+      - "5000:5000"
+    volumes:
+      - sai:/data
+    networks:
+      - sai
+
+  node-app:
+    image: teja99
+    build: /root/docker/node-app/
+    ports:
+      - "3000:3000"
+    networks:
+      - teja
+
+volumes:
+  sai:
+
+networks:
+  sai:
+  teja:

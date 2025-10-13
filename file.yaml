@@ -190,3 +190,16 @@
         name: httpd
         state: started
         enabled: yes
+
+
+
+#UNinstalling Multiple packages at once in centos
+---
+- name: installing multiple packages at once
+  hosts: all
+  become: true
+  tasks: 
+    - name: installing multiple packages at once
+      yum:
+        name: ["git","tree","unzip"]
+        state: absent
