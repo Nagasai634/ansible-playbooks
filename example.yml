@@ -1,0 +1,39 @@
+---
+- name: playbook
+  hosts: all
+  become: true
+  vars:
+   coursename: devops
+   batchnumber: 24 
+  tasks:
+   - name: installing a webserver on centos
+     yum:
+      name: httpd
+      state: present
+   - name: starting a webserver on centos
+     service:
+      name: httpd
+      state: started
+      enabled: true
+   - name: creating a dir on centos
+     file:
+      path: /root/ansible
+      state: directory
+      mode: 0777
+   - name: creating a file on centos
+     file:
+      path: /root/ansible/sai.txt
+      state: touch
+  #  - name: copy a file on centos
+  #    copy:
+  #     src: index.html
+  #     dest: /var/www/html/index.html
+   - name: template a file on centos
+     template:
+      src: index.html
+      dest: /var/www/html/index.html
+      
+
+  
+
+    
