@@ -1,0 +1,19 @@
+
+#ansible-vault create sai.yml in sai.yml should have name and passwd
+#ansible-vault view sai.yml --ask-vault-pass
+---
+- name: playbook
+  hosts: all
+  become: true
+  vars_files:
+    - sai.yml
+  tasks:
+    - name: printing name from vault
+      debug:
+        msg: "Name from vault: {{ name }}"
+
+    - name: printing password from vault
+      debug:
+        msg: "Password from vault: {{ passwd }}"
+
+#ansible-playbook -i inv play6.yaml --ask-vault-pass

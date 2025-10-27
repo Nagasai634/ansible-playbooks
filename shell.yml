@@ -30,3 +30,48 @@
         state: started
         enabled: yes
         daemon_reload: yes
+
+
+#COMMAND
+---
+- name: command
+  hosts: all
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Check system uptime
+      ansible.builtin.command: uptime
+      register: uptime_result
+    - name: Display uptime
+      debug:
+         var: uptime_result.stdout
+
+#COMMAND
+---
+- name: command
+  hosts: all
+  become: true
+  gather_facts: true
+  tasks:
+    - name: list out items
+      ansible.builtin.command: ls -la
+      register: output
+    - name: Display output
+      debug:
+         var: output
+
+
+
+#COMMAND
+---
+- name: command
+  hosts: all
+  become: true
+  gather_facts: true
+  tasks:
+    - name: list out items
+      ansible.builtin.command: ls -la
+      register: output
+    - name: Display output
+      debug:
+         msg: "{{output}}"
