@@ -32,6 +32,51 @@
         daemon_reload: yes
 
 
+
+
+---
+- name: Install and start Jenkins on CentOS using shell commands
+  hosts: all
+  become: true
+  tasks:
+    - name: Install wget
+      package:
+        name: wget
+        state: present
+
+    - name: Install Jenkins using shell commands
+      shell: |
+        set -e  # Exit immediately on any error
+        # Download Jenkins repository configuration
+        wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+        # Import Jenkins GPG key
+        rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+        # Update system packages
+        yum upgrade -y
+        # Install dependencies and Jenkins
+        yum install -y fontconfig java-21-openjdk jenkins
+        # Reload systemd daemon
+        systemctl daemon-reload
+      args:
+        executable: /bin/bash
+
+    - name: Start and enable Jenkins service
+      systemd:
+        name: jenkins
+        state: started
+        enabled: yes
+        daemon_reload: yes
+
+    - name: jenkinspasswd
+      command: cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: jenkinspasswd
+
+    - name: displaying the  output
+      debug:
+        var: jenkinspasswd
+
+
+
 #COMMAND
 ---
 - name: command
